@@ -76,12 +76,8 @@ int main(int argc, char **argv) {
             // This is available in the HOME environment variable (use getenv())
             if (tokens.length == 1) {
                 char *home = getenv("HOME");
-                if (home == NULL) {
-                    "Failed to get HOME environment variable\n";
-                } else {
-                    if (chdir(home) == -1) {
-                        perror("chdir");
-                    }
+                if (chdir(home) == -1) {
+                    perror("chdir");
                 }
             } else {
                 if (chdir(strvec_get(&tokens, 1)) == -1) {
@@ -148,6 +144,24 @@ int main(int argc, char **argv) {
             //   1. Use fork() to spawn a child process
             //   2. Call run_command() in the child process
             //   2. In the parent, use waitpid() to wait for the program to exit
+
+            pid_t child_pid = fork();
+            if (child_pid == -1) {
+                perror("fork");
+                return 1;
+            } else if (child_pid == 0) {
+                // child process
+                if (run_command(&tokens) == -1) {
+                    return 1;
+                }
+            } else {
+                // parent process
+                int status;
+                if (waitpid(child_pid, &status, WUNTRACED) == -1) {
+                    perror("waitpid");
+                    return 1;
+                }
+            }
 
             // TODO Task 4: Set the child process as the target of signals sent to the terminal
             // via the keyboard.

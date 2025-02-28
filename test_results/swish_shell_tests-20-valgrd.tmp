@@ -1,0 +1,31 @@
+==10890== Memcheck, a memory error detector
+==10890== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==10890== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==10890== Command: ./swish
+==10890== Parent PID: 10701
+==10890== 
+==10890== 
+==10890== HEAP SUMMARY:
+==10890==     in use at exit: 41 bytes in 4 blocks
+==10890==   total heap usage: 8 allocs, 4 frees, 3,585 bytes allocated
+==10890== 
+==10890== 9 bytes in 3 blocks are indirectly lost in loss record 1 of 2
+==10890==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10890==    by 0x109B91: strvec_add (string_vector.c:54)
+==10890==    by 0x10A15D: tokenize (swish_funcs.c:29)
+==10890==    by 0x10953F: main (swish.c:47)
+==10890== 
+==10890== 41 (32 direct, 9 indirect) bytes in 1 blocks are definitely lost in loss record 2 of 2
+==10890==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10890==    by 0x109A1A: strvec_init (string_vector.c:14)
+==10890==    by 0x1094BD: main (swish.c:33)
+==10890== 
+==10890== LEAK SUMMARY:
+==10890==    definitely lost: 32 bytes in 1 blocks
+==10890==    indirectly lost: 9 bytes in 3 blocks
+==10890==      possibly lost: 0 bytes in 0 blocks
+==10890==    still reachable: 0 bytes in 0 blocks
+==10890==         suppressed: 0 bytes in 0 blocks
+==10890== 
+==10890== For lists of detected and suppressed errors, rerun with: -s
+==10890== ERROR SUMMARY: 2 errors from 2 contexts (suppressed: 0 from 0)

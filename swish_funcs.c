@@ -26,9 +26,9 @@ int tokenize(char *s, strvec_t *tokens) {
     // Return 0 on success, -1 on error
     char *token = strtok(s, " ");
     while (token != NULL) {
-        if (strvec_append(tokens, token) == -1) {
+        if (strvec_add(tokens, token) == -1) {
             return -1;
-            // error with strvec_append
+            // error with strvec_add
         }
         token = strtok(NULL, " ");
     }
@@ -43,6 +43,22 @@ int run_command(strvec_t *tokens) {
     // Another Hint: You have a guarantee of the longest possible needed array, so you
     // won't have to use malloc.
 
+    if (tokens->length == 0) {
+        return -1;
+    }
+    char *args[MAX_ARGS];
+    for (int i = 0; i < tokens->length; i++) {
+        args[i] = strvec_get(tokens, i);
+        // extracting tokens into char* array
+    }
+    args[tokens->length] = NULL; // null terminate for the exec call
+    execvp(args[0], args);
+    perror("exec");
+    exit(EXIT_FAILURE);
+    return -1;
+    // this way run_command() only returns if unsuccessful
+
+
     // TODO Task 3: Extend this function to perform output redirection before exec()'ing
     // Check for '<' (redirect input), '>' (redirect output), '>>' (redirect and append output)
     // entries inside of 'tokens' (the strvec_find() function will do this for you)
@@ -50,6 +66,7 @@ int run_command(strvec_t *tokens) {
     // Use dup2() to redirect stdin (<), stdout (> or >>)
     // DO NOT pass redirection operators and file names to exec()'d program
     // E.g., "ls -l > out.txt" should be exec()'d with strings "ls", "-l", NULL
+    
 
     // TODO Task 4: You need to do two items of setup before exec()'ing
     // 1. Restore the signal handlers for SIGTTOU and SIGTTIN to their defaults.

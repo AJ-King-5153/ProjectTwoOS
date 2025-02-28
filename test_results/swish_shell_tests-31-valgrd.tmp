@@ -1,0 +1,31 @@
+==11023== Memcheck, a memory error detector
+==11023== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==11023== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==11023== Command: ./swish
+==11023== Parent PID: 10701
+==11023== 
+==11023== 
+==11023== HEAP SUMMARY:
+==11023==     in use at exit: 35 bytes in 2 blocks
+==11023==   total heap usage: 6 allocs, 4 frees, 3,579 bytes allocated
+==11023== 
+==11023== 3 bytes in 1 blocks are indirectly lost in loss record 1 of 2
+==11023==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==11023==    by 0x109B91: strvec_add (string_vector.c:54)
+==11023==    by 0x10A15D: tokenize (swish_funcs.c:29)
+==11023==    by 0x10953F: main (swish.c:47)
+==11023== 
+==11023== 35 (32 direct, 3 indirect) bytes in 1 blocks are definitely lost in loss record 2 of 2
+==11023==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==11023==    by 0x109A1A: strvec_init (string_vector.c:14)
+==11023==    by 0x1094BD: main (swish.c:33)
+==11023== 
+==11023== LEAK SUMMARY:
+==11023==    definitely lost: 32 bytes in 1 blocks
+==11023==    indirectly lost: 3 bytes in 1 blocks
+==11023==      possibly lost: 0 bytes in 0 blocks
+==11023==    still reachable: 0 bytes in 0 blocks
+==11023==         suppressed: 0 bytes in 0 blocks
+==11023== 
+==11023== For lists of detected and suppressed errors, rerun with: -s
+==11023== ERROR SUMMARY: 2 errors from 2 contexts (suppressed: 0 from 0)

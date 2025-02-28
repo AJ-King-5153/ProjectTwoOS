@@ -1,0 +1,15 @@
+==10796== Memcheck, a memory error detector
+==10796== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==10796== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==10796== Command: ./swish
+==10796== Parent PID: 10701
+==10796== 
+==10796== 
+==10796== HEAP SUMMARY:
+==10796==     in use at exit: 0 bytes in 0 blocks
+==10796==   total heap usage: 22 allocs, 22 frees, 2,337 bytes allocated
+==10796== 
+==10796== All heap blocks were freed -- no leaks are possible
+==10796== 
+==10796== For lists of detected and suppressed errors, rerun with: -s
+==10796== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
