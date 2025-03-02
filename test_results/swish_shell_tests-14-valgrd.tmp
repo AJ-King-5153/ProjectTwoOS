@@ -1,15 +1,40 @@
-==10835== Memcheck, a memory error detector
-==10835== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
-==10835== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
-==10835== Command: ./swish
-==10835== Parent PID: 10701
-==10835== 
-==10835== 
-==10835== HEAP SUMMARY:
-==10835==     in use at exit: 0 bytes in 0 blocks
-==10835==   total heap usage: 8 allocs, 8 frees, 2,151 bytes allocated
-==10835== 
-==10835== All heap blocks were freed -- no leaks are possible
-==10835== 
-==10835== For lists of detected and suppressed errors, rerun with: -s
-==10835== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==15023== Memcheck, a memory error detector
+==15023== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==15023== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==15023== Command: ./swish
+==15023== Parent PID: 14899
+==15023== 
+==15037== 
+==15037== HEAP SUMMARY:
+==15037==     in use at exit: 66 bytes in 4 blocks
+==15037==   total heap usage: 8 allocs, 4 frees, 3,610 bytes allocated
+==15037== 
+==15037== 34 bytes in 3 blocks are indirectly lost in loss record 1 of 2
+==15037==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==15037==    by 0x109BF1: strvec_add (string_vector.c:54)
+==15037==    by 0x10A1BD: tokenize (swish_funcs.c:29)
+==15037==    by 0x10959F: main (swish.c:47)
+==15037== 
+==15037== 66 (32 direct, 34 indirect) bytes in 1 blocks are definitely lost in loss record 2 of 2
+==15037==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==15037==    by 0x109A7A: strvec_init (string_vector.c:14)
+==15037==    by 0x10951D: main (swish.c:33)
+==15037== 
+==15037== LEAK SUMMARY:
+==15037==    definitely lost: 32 bytes in 1 blocks
+==15037==    indirectly lost: 34 bytes in 3 blocks
+==15037==      possibly lost: 0 bytes in 0 blocks
+==15037==    still reachable: 0 bytes in 0 blocks
+==15037==         suppressed: 0 bytes in 0 blocks
+==15037== 
+==15037== For lists of detected and suppressed errors, rerun with: -s
+==15037== ERROR SUMMARY: 2 errors from 2 contexts (suppressed: 0 from 0)
+==15023== 
+==15023== HEAP SUMMARY:
+==15023==     in use at exit: 0 bytes in 0 blocks
+==15023==   total heap usage: 8 allocs, 8 frees, 2,151 bytes allocated
+==15023== 
+==15023== All heap blocks were freed -- no leaks are possible
+==15023== 
+==15023== For lists of detected and suppressed errors, rerun with: -s
+==15023== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

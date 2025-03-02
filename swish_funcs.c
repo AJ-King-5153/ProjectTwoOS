@@ -47,17 +47,75 @@ int run_command(strvec_t *tokens) {
         return -1;
     }
     char *args[MAX_ARGS];
+    int in = -1;
+    int out = -1;
+    int append = -1;
+    // for checking which redirection operators are used
+    int arg_count = 0;
+    // arg_count for ensuring proper null termination post loop
     for (int i = 0; i < tokens->length; i++) {
-        args[i] = strvec_get(tokens, i);
-        // extracting tokens into char* array
+        if (strcmp(strvec_get(tokens, i), "<") == 0) {
+            in = i;
+            i++;
+        } else if (strcmp(strvec_get(tokens, i), ">") == 0) {
+            out = i;
+            i++;
+        } else if (strcmp(strvec_get(tokens, i), ">>") == 0) {
+            append = i;
+            i++;
+        } else {
+            args[arg_count] = strvec_get(tokens, i);
+            arg_count++;
+            // extracting tokens into char* array still
+        }
     }
-    args[tokens->length] = NULL; // null terminate for the exec call
+
+    args[arg_count] = NULL;    // null terminate for the exec call
+
+    if (in != -1) {
+        // handle input redirection
+        int input_fd = open(strvec_get(tokens, in + 1), O_RDONLY);
+        if (input_fd == -1) {
+            perror("Failed to open input file");
+            return -1;
+        }
+        if (dup2(input_fd, STDIN_FILENO) == -1) {
+            perror("dup2");
+            return -1;
+        }
+        close(input_fd);
+    }
+    if (out != -1) {
+        // handle output redirection
+        int output_fd = open(strvec_get(tokens, out + 1), O_WRONLY | O_CREAT | O_TRUNC, 0644);
+        if (output_fd == -1) {
+            perror("Failed to open input file");
+            return -1;
+        }
+        if (dup2(output_fd, STDOUT_FILENO) == -1) {
+            perror("dup2");
+            return -1;
+        }
+        close(output_fd);
+    }
+    if (append != -1) {
+        // handle appending output redirection
+        int append_fd = open(strvec_get(tokens, append + 1), O_WRONLY | O_CREAT | O_APPEND, 0644);
+        if (append_fd == -1) {
+            perror("Failed to open input file");
+            return -1;
+        }
+        if (dup2(append_fd, STDOUT_FILENO) == -1) {
+            perror("dup2");
+            return -1;
+        }
+        close(append_fd);
+    }
     execvp(args[0], args);
     perror("exec");
     exit(EXIT_FAILURE);
     return -1;
     // this way run_command() only returns if unsuccessful
-
 
     // TODO Task 3: Extend this function to perform output redirection before exec()'ing
     // Check for '<' (redirect input), '>' (redirect output), '>>' (redirect and append output)
@@ -66,7 +124,6 @@ int run_command(strvec_t *tokens) {
     // Use dup2() to redirect stdin (<), stdout (> or >>)
     // DO NOT pass redirection operators and file names to exec()'d program
     // E.g., "ls -l > out.txt" should be exec()'d with strings "ls", "-l", NULL
-    
 
     // TODO Task 4: You need to do two items of setup before exec()'ing
     // 1. Restore the signal handlers for SIGTTOU and SIGTTIN to their defaults.
