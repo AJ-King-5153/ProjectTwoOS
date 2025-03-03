@@ -59,6 +59,13 @@ int main(int argc, char **argv) {
         if (strcmp(first_token, "pwd") == 0) {
             // TODO Task 1: Print the shell's current working directory
             // Use the getcwd() system call
+            char cwd[CMD_LEN];
+            getcwd(cwd, sizeof(cwd));
+            if (cwd == NULL) {
+                perror("getcwd");
+            } else {
+                printf("%s\n", cwd);
+            }
         }
 
         else if (strcmp(first_token, "cd") == 0) {
@@ -67,6 +74,16 @@ int main(int argc, char **argv) {
             // If the user supplied an argument (token at index 1), change to that directory
             // Otherwise, change to the home directory by default
             // This is available in the HOME environment variable (use getenv())
+            if (tokens.length == 1) {
+                char *home = getenv("HOME");
+                if (chdir(home) == -1) {
+                    perror("chdir");
+                }
+            } else {
+                if (chdir(strvec_get(&tokens, 1)) == -1) {
+                    perror("chdir");
+                }
+            }
         }
 
         else if (strcmp(first_token, "exit") == 0) {
@@ -127,6 +144,28 @@ int main(int argc, char **argv) {
             //   1. Use fork() to spawn a child process
             //   2. Call run_command() in the child process
             //   2. In the parent, use waitpid() to wait for the program to exit
+
+            pid_t child_pid = fork();
+            if (child_pid == -1) {
+                perror("fork");
+                return 1;
+            } else if (child_pid == 0) {
+                // child process
+                if (run_command(&tokens) == -1) {
+                    return 1;
+                }
+            } else {
+                // parent process
+                int status;
+                tcsetpgrp(STDIN_FILENO, child_pid);
+                // put child process in foreground ^
+                if (waitpid(child_pid, &status, WUNTRACED) == -1) {
+                    perror("waitpid");
+                    return 1;
+                }
+                tcsetpgrp(STDIN_FILENO, getpid());
+                // put shell back in foreground ^
+            }
 
             // TODO Task 4: Set the child process as the target of signals sent to the terminal
             // via the keyboard.

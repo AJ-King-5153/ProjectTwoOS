@@ -24,6 +24,14 @@ int tokenize(char *s, strvec_t *tokens) {
     // Use the strtok() function to accomplish this
     // Add each token to the 'tokens' parameter (a string vector)
     // Return 0 on success, -1 on error
+    char *token = strtok(s, " ");
+    while (token != NULL) {
+        if (strvec_add(tokens, token) == -1) {
+            return -1;
+            // error with strvec_add
+        }
+        token = strtok(NULL, " ");
+    }
     return 0;
 }
 
@@ -34,6 +42,97 @@ int run_command(strvec_t *tokens) {
     // Hint: Build a string array from the 'tokens' vector and pass this into execvp()
     // Another Hint: You have a guarantee of the longest possible needed array, so you
     // won't have to use malloc.
+
+    if (tokens->length == 0) {
+        return -1;
+    }
+    char *args[MAX_ARGS];
+    int in = -1;
+    int out = -1;
+    int append = -1;
+    // for checking which redirection operators are used
+    int arg_count = 0;
+    // arg_count for ensuring proper null termination post loop
+    for (int i = 0; i < tokens->length; i++) {
+        if (strcmp(strvec_get(tokens, i), "<") == 0) {
+            in = i;
+            i++;
+        } else if (strcmp(strvec_get(tokens, i), ">") == 0) {
+            out = i;
+            i++;
+        } else if (strcmp(strvec_get(tokens, i), ">>") == 0) {
+            append = i;
+            i++;
+        } else {
+            args[arg_count] = strvec_get(tokens, i);
+            arg_count++;
+            // extracting tokens into char* array still
+        }
+    }
+
+    args[arg_count] = NULL;// null terminate for the exec call
+
+    if (in != -1) {
+        // handle input redirection
+        int input_fd = open(strvec_get(tokens, in + 1), O_RDONLY);
+        if (input_fd == -1) {
+            perror("Failed to open input file");
+            return -1;
+        }
+        if (dup2(input_fd, STDIN_FILENO) == -1) {
+            perror("dup2");
+            return -1;
+        }
+        close(input_fd);
+    }
+    if (out != -1) {
+        // handle output redirection
+        int output_fd = open(strvec_get(tokens, out + 1), O_WRONLY | O_CREAT | O_TRUNC, 0644);
+        if (output_fd == -1) {
+            perror("Failed to open input file");
+            return -1;
+        }
+        if (dup2(output_fd, STDOUT_FILENO) == -1) {
+            perror("dup2");
+            return -1;
+        }
+        close(output_fd);
+    }
+    if (append != -1) {
+        // handle append output redirection
+        int append_fd = open(strvec_get(tokens, append + 1), O_WRONLY | O_CREAT | O_APPEND, 0644);
+        if (append_fd == -1) {
+            perror("Failed to open input file");
+            return -1;
+        }
+        if (dup2(append_fd, STDOUT_FILENO) == -1) {
+            perror("dup2");
+            return -1;
+        }
+        close(append_fd);
+    }
+    // signal handling before exec
+    struct sigaction sac;
+    sac.sa_handler = SIG_DFL;  // change back to default signal handling of child process
+    if (sigfillset(&sac.sa_mask) == -1) {
+        perror("sigfillset");
+        exit(1);
+    }
+    sac.sa_flags = 0;
+    if (sigaction(SIGTTIN, &sac, NULL) == -1 || sigaction(SIGTTOU, &sac, NULL) == -1) {
+        perror("sigaction");
+        exit(1);
+    }
+    // sets the childs process group
+    pid_t pid = getpid();
+    if (setpgid(pid, pid) == -1) {
+        perror("setpgid");
+        exit(1);
+    }
+    execvp(args[0], args);
+    perror("exec");
+    exit(1);
+    // this way run_command() only returns if unsuccessful
 
     // TODO Task 3: Extend this function to perform output redirection before exec()'ing
     // Check for '<' (redirect input), '>' (redirect output), '>>' (redirect and append output)

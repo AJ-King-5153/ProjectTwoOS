@@ -1,0 +1,40 @@
+==28009== Memcheck, a memory error detector
+==28009== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==28009== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==28009== Command: ./swish
+==28009== Parent PID: 27928
+==28009== 
+==28011== 
+==28011== HEAP SUMMARY:
+==28011==     in use at exit: 62 bytes in 2 blocks
+==28011==   total heap usage: 6 allocs, 4 frees, 3,606 bytes allocated
+==28011== 
+==28011== 30 bytes in 1 blocks are still reachable in loss record 1 of 2
+==28011==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==28011==    by 0x109C74: strvec_add (string_vector.c:54)
+==28011==    by 0x10A240: tokenize (swish_funcs.c:29)
+==28011==    by 0x1095FF: main (swish.c:47)
+==28011== 
+==28011== 32 bytes in 1 blocks are still reachable in loss record 2 of 2
+==28011==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==28011==    by 0x109AFD: strvec_init (string_vector.c:14)
+==28011==    by 0x10957D: main (swish.c:33)
+==28011== 
+==28011== LEAK SUMMARY:
+==28011==    definitely lost: 0 bytes in 0 blocks
+==28011==    indirectly lost: 0 bytes in 0 blocks
+==28011==      possibly lost: 0 bytes in 0 blocks
+==28011==    still reachable: 62 bytes in 2 blocks
+==28011==         suppressed: 0 bytes in 0 blocks
+==28011== 
+==28011== For lists of detected and suppressed errors, rerun with: -s
+==28011== ERROR SUMMARY: 2 errors from 2 contexts (suppressed: 0 from 0)
+==28009== 
+==28009== HEAP SUMMARY:
+==28009==     in use at exit: 0 bytes in 0 blocks
+==28009==   total heap usage: 6 allocs, 6 frees, 2,147 bytes allocated
+==28009== 
+==28009== All heap blocks were freed -- no leaks are possible
+==28009== 
+==28009== For lists of detected and suppressed errors, rerun with: -s
+==28009== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

@@ -1,0 +1,50 @@
+==28180== Memcheck, a memory error detector
+==28180== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==28180== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==28180== Command: ./swish
+==28180== Parent PID: 27928
+==28180== 
+==28180== 
+==28180== Process terminating with default action of signal 2 (SIGINT)
+==28180==    at 0x49737E2: read (read.c:26)
+==28180==    by 0x48EBC35: _IO_file_underflow@@GLIBC_2.2.5 (fileops.c:516)
+==28180==    by 0x48ECD95: _IO_default_uflow (genops.c:362)
+==28180==    by 0x48DF41B: _IO_getline_info (iogetline.c:60)
+==28180==    by 0x48DE40F: fgets (iofgets.c:53)
+==28180==    by 0x109A9B: main (swish.c:39)
+==28180== 
+==28180== HEAP SUMMARY:
+==28180==     in use at exit: 2,048 bytes in 2 blocks
+==28180==   total heap usage: 9 allocs, 7 frees, 2,157 bytes allocated
+==28180== 
+==28180== 1,024 bytes in 1 blocks are still reachable in loss record 1 of 2
+==28180==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==28180==    by 0x48DDBA3: _IO_file_doallocate (filedoalloc.c:101)
+==28180==    by 0x48ECCDF: _IO_doallocbuf (genops.c:347)
+==28180==    by 0x48EBF5F: _IO_file_overflow@@GLIBC_2.2.5 (fileops.c:744)
+==28180==    by 0x48EA6D4: _IO_new_file_xsputn (fileops.c:1243)
+==28180==    by 0x48EA6D4: _IO_file_xsputn@@GLIBC_2.2.5 (fileops.c:1196)
+==28180==    by 0x48D600B: outstring_func (vfprintf-internal.c:239)
+==28180==    by 0x48D600B: __vfprintf_internal (vfprintf-internal.c:1517)
+==28180==    by 0x48BF79E: printf (printf.c:33)
+==28180==    by 0x1095AA: main (swish.c:38)
+==28180== 
+==28180== 1,024 bytes in 1 blocks are still reachable in loss record 2 of 2
+==28180==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==28180==    by 0x48DDBA3: _IO_file_doallocate (filedoalloc.c:101)
+==28180==    by 0x48ECCDF: _IO_doallocbuf (genops.c:347)
+==28180==    by 0x48EBCDB: _IO_file_underflow@@GLIBC_2.2.5 (fileops.c:485)
+==28180==    by 0x48ECD95: _IO_default_uflow (genops.c:362)
+==28180==    by 0x48DF41B: _IO_getline_info (iogetline.c:60)
+==28180==    by 0x48DE40F: fgets (iofgets.c:53)
+==28180==    by 0x109A9B: main (swish.c:39)
+==28180== 
+==28180== LEAK SUMMARY:
+==28180==    definitely lost: 0 bytes in 0 blocks
+==28180==    indirectly lost: 0 bytes in 0 blocks
+==28180==      possibly lost: 0 bytes in 0 blocks
+==28180==    still reachable: 2,048 bytes in 2 blocks
+==28180==         suppressed: 0 bytes in 0 blocks
+==28180== 
+==28180== For lists of detected and suppressed errors, rerun with: -s
+==28180== ERROR SUMMARY: 2 errors from 2 contexts (suppressed: 0 from 0)
