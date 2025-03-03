@@ -70,7 +70,7 @@ int run_command(strvec_t *tokens) {
         }
     }
 
-    args[arg_count] = NULL;    // null terminate for the exec call
+    args[arg_count] = NULL;// null terminate for the exec call
 
     if (in != -1) {
         // handle input redirection
@@ -99,7 +99,7 @@ int run_command(strvec_t *tokens) {
         close(output_fd);
     }
     if (append != -1) {
-        // handle appending output redirection
+        // handle append output redirection
         int append_fd = open(strvec_get(tokens, append + 1), O_WRONLY | O_CREAT | O_APPEND, 0644);
         if (append_fd == -1) {
             perror("Failed to open input file");
@@ -111,10 +111,27 @@ int run_command(strvec_t *tokens) {
         }
         close(append_fd);
     }
+    // signal handling before exec
+    struct sigaction sac;
+    sac.sa_handler = SIG_DFL;  // change back to default signal handling of child process
+    if (sigfillset(&sac.sa_mask) == -1) {
+        perror("sigfillset");
+        exit(1);
+    }
+    sac.sa_flags = 0;
+    if (sigaction(SIGTTIN, &sac, NULL) == -1 || sigaction(SIGTTOU, &sac, NULL) == -1) {
+        perror("sigaction");
+        exit(1);
+    }
+    // sets the childs process group
+    pid_t pid = getpid();
+    if (setpgid(pid, pid) == -1) {
+        perror("setpgid");
+        exit(1);
+    }
     execvp(args[0], args);
     perror("exec");
-    exit(EXIT_FAILURE);
-    return -1;
+    exit(1);
     // this way run_command() only returns if unsuccessful
 
     // TODO Task 3: Extend this function to perform output redirection before exec()'ing

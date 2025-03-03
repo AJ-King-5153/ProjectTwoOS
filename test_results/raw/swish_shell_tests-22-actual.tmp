@@ -1,2 +1,12 @@
 @> wc
-waitpid: Interrupted system call
+@> jobs
+@> cat
+@> jobs
+@> wc -l
+@> jobs
+@> fg 1
+@> this is a test
+exec: No such file or directory
+@> of your shell program
+exec: No such file or directory
+@> 

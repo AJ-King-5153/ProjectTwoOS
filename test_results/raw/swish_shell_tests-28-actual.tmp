@@ -1,2 +1,7 @@
 @> ./slow_write 3 1 out.txt
-waitpid: Interrupted system call
+@> jobs
+@> bg 0
+@> jobs
+@> sleep 4
+@> cat out.txt
+@> exit

@@ -157,10 +157,14 @@ int main(int argc, char **argv) {
             } else {
                 // parent process
                 int status;
+                tcsetpgrp(STDIN_FILENO, child_pid);
+                // put child process in foreground ^
                 if (waitpid(child_pid, &status, WUNTRACED) == -1) {
                     perror("waitpid");
                     return 1;
                 }
+                tcsetpgrp(STDIN_FILENO, getpid());
+                // put shell back in foreground ^
             }
 
             // TODO Task 4: Set the child process as the target of signals sent to the terminal

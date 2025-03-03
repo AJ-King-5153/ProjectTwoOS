@@ -1,2 +1,4 @@
 @> wc
-waitpid: Interrupted system call
+@> jobs
+@> fg 0
+@> 

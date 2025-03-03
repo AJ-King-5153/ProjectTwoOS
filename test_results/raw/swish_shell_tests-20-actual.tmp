@@ -1,2 +1,3 @@
 @> wc -l -m
-waitpid: Interrupted system call
+@> jobs
+@> exit

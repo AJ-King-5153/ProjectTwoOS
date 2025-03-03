@@ -1,2 +1,3 @@
 @> wc
-waitpid: Interrupted system call
+@> jobs
+@> exit

@@ -5,40 +5,18 @@
 Running test...
 Expected output is in file 'test_results/raw/swish_shell_tests-26-expected.tmp'
 Actual output is in file 'test_results/raw/swish_shell_tests-26-actual.tmp'
-Error: VALGRIND CHECK FAILED. Output:
-@> wc
-waitpid: Interrupted system call
-
-
-== Valgrind Results (from 'test_results/swish_shell_tests-26-valgrd.tmp')
-==15126== Memcheck, a memory error detector
-==15126== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
-==15126== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
-==15126== Command: ./swish
-==15126== Parent PID: 14899
-==15126== 
-==15126== 
-==15126== HEAP SUMMARY:
-==15126==     in use at exit: 35 bytes in 2 blocks
-==15126==   total heap usage: 6 allocs, 4 frees, 3,579 bytes allocated
-==15126== 
-==15126== 3 bytes in 1 blocks are indirectly lost in loss record 1 of 2
-==15126==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==15126==    by 0x109BF1: strvec_add (string_vector.c:54)
-==15126==    by 0x10A1BD: tokenize (swish_funcs.c:29)
-==15126==    by 0x10959F: main (swish.c:47)
-==15126== 
-==15126== 35 (32 direct, 3 indirect) bytes in 1 blocks are definitely lost in loss record 2 of 2
-==15126==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==15126==    by 0x109A7A: strvec_init (string_vector.c:14)
-==15126==    by 0x10951D: main (swish.c:33)
-==15126== 
-==15126== LEAK SUMMARY:
-==15126==    definitely lost: 32 bytes in 1 blocks
-==15126==    indirectly lost: 3 bytes in 1 blocks
-==15126==      possibly lost: 0 bytes in 0 blocks
-==15126==    still reachable: 0 bytes in 0 blocks
-==15126==         suppressed: 0 bytes in 0 blocks
-==15126== 
-==15126== For lists of detected and suppressed errors, rerun with: -s
-==15126== ERROR SUMMARY: 2 errors from 2 contexts (suppressed: 0 from 0)
+Test FAILED
+== Side-by-Side Comparison ==
+== Differing lines have a character like '|' '>' or '<' in the middle
+==== EXPECT ====   ==== ACTUAL ====
+@> wc              @> wc
+@> jobs            @> jobs
+0: wc (stopped)  <
+@> fg 0            @> fg 0
+@> jobs          | @> 
+@> exit          <
+== Line Differences ==
+EXPECT 3) 0: wc (stopped)
+EXPECT 5) @> jobs
+ACTUAL 4) @> 
+EXPECT 6) @> exit

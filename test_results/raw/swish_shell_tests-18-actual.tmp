@@ -1,2 +1,4 @@
 @> wc
-waitpid: Interrupted system call
+@> echo foo
+foo
+@> exit

@@ -1,2 +1,6 @@
 @> wc
-waitpid: Interrupted system call
+@> jobs
+@> fg 0
+@> this is a test
+exec: No such file or directory
+@> exit
